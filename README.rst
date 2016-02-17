@@ -38,7 +38,7 @@ Search for products by barcode:
     >>> gtin14 = "037000062219"
     >>> product = datakick.find_product(gtin14)
     >>> print("{} - {}".format(product.brand_name, product.name))
-    Crest Pro-Health Clean Mint Toothpaste
+    'Crest Pro-Health Clean Mint Toothpaste'
 
 Search for products with a key:
 
@@ -47,8 +47,8 @@ Search for products with a key:
     >>> products = datakick.search("Toothpaste")
     >>> for product in products:
     ...    print("{} - {}".format(product.brand_name, product.name))
-    Crest Pro-Health Clean Mint Toothpaste
-    Sensodyne Fresh Impact Toothpaste
+    'Crest Pro-Health Clean Mint Toothpaste'
+    'Sensodyne Fresh Impact Toothpaste'
     # etc.
 
 Add/modify products in the database:
@@ -63,7 +63,7 @@ Add/modify products in the database:
     >>> print("{} - {} - {}".format(
     ... product.brand_name, product.name, product.size)
     ... )
-    Big K Diet Cola 355mL
+    'Big K Diet Cola 355mL'
 
 Add images to products in the database:
 
@@ -74,7 +74,7 @@ Add images to products in the database:
     >>> img_url = datakick.add_image(gtin14, img_path)
 
     >>> print(img_url)
-    https://d2b9vdin3yve6y.cloudfront.net/1a888191-e530-4d55-a871-00a0994d75c0.jpg
+    'https://d2b9vdin3yve6y.cloudfront.net/1a888191-e530-4d55-a871-00a0994d75c0.jpg'
 
 List the products (on a page):
 
@@ -84,8 +84,8 @@ List the products (on a page):
 
     >>> for product in products:
     ...     print(product.gtin14)
-    016000437692
-    016000439894
+    '016000437692'
+    '016000439894'
     # etc.
 
 Optional Parameters for Adding/Modifying a product:

@@ -15,6 +15,11 @@ class DatakickProduct(object):
     def __init__(self, json_response):
         self._response = json_response
 
+        # convert images from list of dictionaries to list of urls
+        self._response["images"] = [
+            dct["url"] for dct in self._response.get("images", [])
+        ]
+
     @property
     def alcohol_by_volume(self):
         return self._response.get("alcohol_by_volume")
@@ -60,12 +65,7 @@ class DatakickProduct(object):
 
     @property
     def images(self):
-        images = self._response.get("images")
-
-        if images:
-            return [dictionary["url"] for dictionary in images]
-
-        return []
+        return self._response.get("images", [])
     
     @property
     def ingredients(self):

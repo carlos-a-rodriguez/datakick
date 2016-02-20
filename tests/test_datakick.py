@@ -17,39 +17,45 @@ from datakick.models import DatakickProduct
 
 class TestDatakick(unittest.TestCase):
 
-    valid_gtin14 = "000000000000"
+    def setUp(self):
+        self.valid_gtin14 = "000000000000"
 
-    valid_add_params = {
-        "brand_name": "MyBrand",
-        "name": "MyName",
-        "size": "21oz",
-        "ingredients": "Chocolate",
-        "serving_size": "34g",
-        "servings_per_container": 10,
-        "calories": 200,
-        "fat_calories": 5,
-        "fat": 5,
-        "saturated_fat": 5,
-        "trans_fat": 5,
-        "polyunsaturated_fat": 5,
-        "monounsaturated_fat": 5,
-        "cholesterol": 5,
-        "sodium": 5,
-        "potassium": 5,
-        "carbohydrate": 5,
-        "fiber": 5,
-        "sugars": 5,
-        "protein": 5,
-        "author": "AuthName",
-        "publisher": "MyPublisher",
-        "pages": 5,
-        "alcohol_by_volume": 5,
-    }
+        self.valid_add_params = {
+            "brand_name": "MyBrand",
+            "name": "MyName",
+            "size": "21oz",
+            "ingredients": "Chocolate",
+            "serving_size": "34g",
+            "servings_per_container": 10,
+            "calories": 200,
+            "fat_calories": 5,
+            "fat": 5,
+            "saturated_fat": 5,
+            "trans_fat": 5,
+            "polyunsaturated_fat": 5,
+            "monounsaturated_fat": 5,
+            "cholesterol": 5,
+            "sodium": 5,
+            "potassium": 5,
+            "carbohydrate": 5,
+            "fiber": 5,
+            "sugars": 5,
+            "protein": 5,
+            "author": "AuthName",
+            "publisher": "MyPublisher",
+            "pages": 5,
+            "alcohol_by_volume": 5,
+        }
 
-    valid_add_image_response = {
-        "id": 701,
-        "image_url": "https://someimgurl.jpg"
-    }
+        self.valid_add_image_response = {
+            "id": 701,
+            "image_url": "https://someimgurl.jpg"
+        }
+
+        self.json_response = copy.deepcopy(self.valid_add_params)
+        self.json_response["images"] = [
+            {"url": "someurl_1"}, {"url": "someurl_2"}
+        ]
 
     def test__check_image_ext_exception(self):
         bad_img_ext = "/path/to/my/image.png"
@@ -113,7 +119,9 @@ class TestDatakick(unittest.TestCase):
 
     @mock.patch("requests.put")
     def test_add_product_call_pass(self, put_request):
-        put_request.return_value.json = mock.MagicMock(return_value=None)
+        put_request.return_value.json = mock.MagicMock(
+            return_value=self.json_response
+        )
 
         dk.add_product(self.valid_gtin14, **self.valid_add_params)
 
@@ -134,7 +142,9 @@ class TestDatakick(unittest.TestCase):
     def test_find_product_pass(self, get_request):
         url = "https://www.datakick.org/api/items/000000000000"
 
-        get_request.return_value.json = mock.MagicMock(return_value=None)
+        get_request.return_value.json = mock.MagicMock(
+            return_value=self.json_response
+        )
 
         dk.find_product(self.valid_gtin14)
 

@@ -84,14 +84,7 @@ def add_image(gtin14, img_path):
     return resp.json().get("image_url")
 
 
-def add_product(gtin14, brand_name=None, name=None, size=None, ingredients=None,
-                serving_size=None, servings_per_container=None, calories=None,
-                fat_calories=None, fat=None, saturated_fat=None, trans_fat=None,
-                polyunsaturated_fat=None, monounsaturated_fat=None,
-                cholesterol=None, sodium=None, potassium=None,
-                carbohydrate=None, fiber=None, sugars=None, protein=None,
-                author=None, publisher=None, pages=None,
-                alcohol_by_volume=None):
+def add_product(gtin14, **kwargs):
     """
     Adds or modifies a product on the Datakick database and returns it.
 
@@ -123,16 +116,9 @@ def add_product(gtin14, brand_name=None, name=None, size=None, ingredients=None,
     :return: :class:`DatakickProduct <DatakickProduct>` object
     :rtype: datakick.models.DatakickProduct
     """
-    params = {}
-
-    for key, val in six.iteritems(locals()):
-        if key not in ("gtin14", "params"):
-            if val:
-                params[key] = val
-
     url = _ADD_PRODUCT_URL.format(gtin14=gtin14)
 
-    resp = requests.put(url, params=params)
+    resp = requests.put(url, params=kwargs)
     resp.raise_for_status()
 
     return DatakickProduct(resp.json())

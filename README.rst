@@ -5,8 +5,9 @@ datakick
 .. image:: https://travis-ci.org/carlos-a-rodriguez/datakick.svg?branch=master
     :target: https://travis-ci.org/carlos-a-rodriguez/datakick
 
-datakick is a python wrapper for the `Datakick <https://www.datakick.org>`_
-open product database API.
+datakick is a python wrapper for the `Datakick`_ open product database API.
+
+Check out the `full documentation`_ or skip to the quick tutorial below.
 
 Usage
 =====
@@ -15,13 +16,13 @@ Installation:
 -------------
 ::
 
-    python setup.py install
+    pip install datakick
 
 or
 
 ::
 
-    pip install datakick
+    python setup.py install
 
 Sample Code:
 ------------
@@ -31,7 +32,7 @@ First import the module:
 
     >>> import datakick
 
-Search for products by barcode: 
+Search for a specific product by barcode: 
 
 .. code-block:: python
 
@@ -40,7 +41,7 @@ Search for products by barcode:
     >>> print("{} - {}".format(product.brand_name, product.name))
     'Crest Pro-Health Clean Mint Toothpaste'
 
-Search for products with a key:
+Query for products using a search term:
 
 .. code-block:: python
 
@@ -51,7 +52,7 @@ Search for products with a key:
     'Sensodyne Fresh Impact Toothpaste'
     # etc.
 
-Add/modify products in the database:
+Add/modify products in the Datakick database:
 
 .. code-block:: python
 
@@ -65,7 +66,7 @@ Add/modify products in the database:
     ... )
     'Big K Diet Cola 355mL'
 
-Add images to products in the database:
+Add an image to a product in the Datakick database:
 
 .. code-block:: python
 
@@ -88,11 +89,11 @@ List the products (on a page):
     '016000439894'
     # etc.
 
-Optional Parameters for Adding/Modifying a product:
----------------------------------------------------
+Optional Arguments for Adding/Modifying a product:
+--------------------------------------------------
 
 ======================  =========    ========== ========================
-Optional Parameters     Type         Units      Example
+Optional Arguments      Type         Units      Example
 ======================  =========    ========== ========================
 name                    string       n/a        "Toothpaste"
 brand_name              string       n/a        "Colgate"
@@ -128,3 +129,6 @@ Exceptions:
 - **datakick.exceptions.InvalidImageFormat** - Will be thrown if the image provided to datakick.add_image is of the wrong file format (only .jpg or .jpeg allowed).
 
 - **requests.exceptions.HTTPError** - Will be thrown if the gtin14 provided is invalid or not found in the product database.
+
+.. _Datakick: https://www.datakick.org
+.. _full documentation: https://datakick.readthedocs.org/en/latest/

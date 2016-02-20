@@ -24,11 +24,12 @@ VALID_IMAGE_EXT = (".jpeg", ".jpg")
 
 def _check_image_ext(img_path):
     """
-    Raises an exception if the image has an invalid extension.
+    Raises :class:`InvalidImageFormatError` if the image doesn't have one of the
+    valid image extensions.
 
     :param img_path: the path to the image
-    :raises datakick.exceptions.InvalidImageFormatError: if the image has an
-        invalid image format
+    :raises InvalidImageFormatError: if the image doesn't have one of
+    the valid image extensions.
     :return None
     """
     _, ext = os.path.splitext(img_path)
@@ -43,11 +44,10 @@ def _check_image_ext(img_path):
 
 def _check_image_size(img_path):
     """
-    Raises an exception if the image is too large.
+    Raises :class:`ImageTooLargeError` if the image is larger 1MB.
 
     :param img_path: the path to the image
-    :raises: datakick.exceptions.ImageTooLargeError: if the image is larger
-        than 1MB
+    :raises ImageTooLargeError: if the image is too large.
     :return: None
     """
     megabyte = 1048576
@@ -58,16 +58,18 @@ def _check_image_size(img_path):
 
 def add_image(gtin14, img_path):
     """
-    Adds an image to the product on the Datakick database.
+    Adds an image to the product on the Datakick database and returns the url to
+    that image.
 
-    :param gtin14: the product's barcode
-    :param img_path: the path to the image
-    :raises: requests.HTTPError: if the gtin14 is invalid
-    :raises: datakick.exceptions.ImageTooLarge: if the image is too large
-    :raises: datakick.exceptions.InvalidImageFormat: if the image has an
-        invalid extension
-    :return: the url to the newly added image
-    :rtype: str
+    :param gtin14: barcode (ean/upc)
+    :param img_path: path to the image
+    :raises requests.HTTPError: if the gtin14 is invalid
+    :raises datakick.exceptions.ImageTooLarge: if the image is larger
+        than 1MB
+    :raises datakick.exceptions.InvalidImageFormat: if the image format is not
+        one of the approved formats.
+    :return: url :class:`str <str>`
+    :rtype: :class:`str <str>`
     """
     _check_image_ext(img_path)
     _check_image_size(img_path)
@@ -91,36 +93,34 @@ def add_product(gtin14, brand_name=None, name=None, size=None, ingredients=None,
                 author=None, publisher=None, pages=None,
                 alcohol_by_volume=None):
     """
-    Adds a new product to the Datakick database. If the product already
-    exists, it adds or modifies the specified parameters.
+    Adds or modifies a product on the Datakick database and returns it.
 
-    :param gtin14: the product's barcode
-    :param name: the product's name
-    :param brand_name: the product's brand
-    :param size: the size of the product (i.e. 20oz or 500g)
-    :param ingredients: a string of the ingredients
-    :param serving_size: the serving size of the product
-    :param servings_per_container: the number of servings per container
-    :param calories: the number of calories
-    :param fat_calories: the number of calories from fat
-    :param fat: the amount of fat in grams (g)
-    :param saturated_fat: the amount of saturated fat in grams (g)
-    :param trans_fat: the amount of trans fat in grams (g)
-    :param polyunsaturated_fat: the amount of polyunsaturated fat in grams (g)
-    :param monounsaturated_fat: the amount of monounsaturated fat in grams (g)
-    :param cholesterol: the amount of cholesterol in milligrams (mg)
-    :param sodium: the amount of sodium in milligrams (mg)
-    :param potassium: the amount of potassium in milligrams (mg)
-    :param carbohydrate: the amount of carbohydrates in grams (g)
-    :param fiber: the amount of fiber in grams (g)
-    :param sugars: the amount of sugar in grams (g)
-    :param protein: the amount of protein in grams (g)
-    :param author: the name of the author of the book
-    :param publisher: the name of the publisher of the book
-    :param pages: the number of pages in the book
-    :param alcohol_by_volume: the percentage of alcohol
-    :return: the newly created or modified product with all associated
-        attributes
+    :param gtin14: barcode (ean/upc)
+    :param name: name
+    :param brand_name: brand name
+    :param size: net weight or volume (i.e. 20oz or 500g)
+    :param ingredients: string of the ingredients
+    :param serving_size: serving size of the product
+    :param servings_per_container: number of servings per container
+    :param calories: number of calories
+    :param fat_calories: number of calories from fat
+    :param fat: amount of fat in grams (g)
+    :param saturated_fat: amount of saturated fat in grams (g)
+    :param trans_fat: amount of trans fat in grams (g)
+    :param polyunsaturated_fat: amount of polyunsaturated fat in grams (g)
+    :param monounsaturated_fat: amount of monounsaturated fat in grams (g)
+    :param cholesterol: amount of cholesterol in milligrams (mg)
+    :param sodium: amount of sodium in milligrams (mg)
+    :param potassium: amount of potassium in milligrams (mg)
+    :param carbohydrate: amount of carbohydrates in grams (g)
+    :param fiber: amount of fiber in grams (g)
+    :param sugars: amount of sugar in grams (g)
+    :param protein: amount of protein in grams (g)
+    :param author: name of the author of the book
+    :param publisher: name of the publisher of the book
+    :param pages: number of pages in the book
+    :param alcohol_by_volume: percentage of alcohol
+    :return: :class:`DatakickProduct <DatakickProduct>` object
     :rtype: datakick.models.DatakickProduct
     """
     params = {}
@@ -140,13 +140,13 @@ def add_product(gtin14, brand_name=None, name=None, size=None, ingredients=None,
 
 def find_product(gtin14):
     """
-    Retrieves the product from the Datakick database matching the gtin14
-    supplied.
+    Finds and returns the product from the Datakick database matching the
+    barcode supplied.
 
-    :param gtin14: the product's barcode
-    :raises: requests.HTTPError: if the gtin14 is invalid or the product is not
+    :param gtin14: barcode (ean/upc)
+    :raises requests.HTTPError: if the gtin14 is invalid or the product is not
         found in the database
-    :return: the product from the Datakick database
+    :return: :class:`DatakickProduct <DatakickProduct>` object
     :rtype: datakick.models.DatakickProduct
     """
     url = _FIND_PRODUCT_URL.format(gtin14=gtin14)
@@ -159,15 +159,13 @@ def find_product(gtin14):
 
 def list_products(page=1):
     """
-    Returns a list of all the products on the specified page. There are 100
-    products per page. If a non-positive page is provided, the first page is
-    returned by default. A page number that is too large will return an empty
-    list.
+    Returns a list of products found on the page specified.
 
-    :param page: the page of products to retrieve
+    :param page: page of products to retrieve
     :type page: int
-    :return: a list of all the products found on that page
-    :rtype: list
+    :return: a :class:`list <list>` of :class:`DatakickProduct<DatakickProduct>`
+        objects
+    :rtype: :class:`list <list>`
     """
     if page < 1:
         page = 1
@@ -185,9 +183,10 @@ def search(key):
     Returns a list of all products in the Datakick database matching the
     supplied query.
 
-    :param key: the query to search Datakick for
-    :return: a list of all products matching the query
-    :rtype: list
+    :param key: the query to search for
+    :return: a :class:`list <list>` of :class:`DatakickProduct<DatakickProduct>`
+        objects
+    :rtype: :class:`list <list>`
     """
     url_safe_key = key.replace(" ", "+")
 

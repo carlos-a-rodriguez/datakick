@@ -3,7 +3,7 @@ datakick.model
 --------------
 
 This module contains the primary model(s) used to return information from the
-datakick service.
+Datakick database.
 
 """
 
@@ -11,12 +11,12 @@ import copy
 
 
 class DatakickProduct(object):
-    """The :class:`DatakickProduct <DatakickProduct>` object, which contains all
-    the attributes of a product from the Datakick service."""
+    """Object which contains all the attributes of a product from the Datakick
+    database."""
 
     def __init__(self, json_response):
         """Creates a :class:`DatakickProduct <DatakickProduct>` object using the
-        json response from the request to the Datakick service."""
+        json response from the request to the Datakick database."""
         self._response = json_response
 
         # convert images from list of dictionaries to list of urls
@@ -75,7 +75,7 @@ class DatakickProduct(object):
     
     @property
     def gtin14(self):
-        """The barcode."""
+        """The barcode (ean/upc)."""
         return self._response.get("gtin14")
 
     @property

@@ -12,4 +12,4 @@ class ImageTooLargeError(Exception):
 
 
 class InvalidImageFormatError(Exception):
-    """The image extension was not one of the accepted extensions."""
+    """The image extension was not one of the approved extensions."""

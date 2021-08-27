@@ -1,7 +1,7 @@
 About
 =====
 
-**Update** - datakick.org was shutdown in March 2020. Therefore, this package no longer works. This documentation will remain here but will receive no further updates.
+Update - datakick.org was shutdown in March 2020. Therefore, this package no longer works. This documentation will remain here but will receive no further updates.
 
 datakick is a Python wrapper for the `Datakick`_ open product database API.
 

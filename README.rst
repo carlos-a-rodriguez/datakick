@@ -5,6 +5,8 @@ datakick
 .. image:: https://travis-ci.org/carlos-a-rodriguez/datakick.svg?branch=master
     :target: https://travis-ci.org/carlos-a-rodriguez/datakick
 
+**Update** - datakick.org was shutdown in March 2020. Therefore, this package no longer works. This repo will remain here but will receive no further updates.
+
 datakick is a python wrapper for the `Datakick`_ open product database API.
 
 Check out the `full documentation`_ or skip to the quick tutorial below.
